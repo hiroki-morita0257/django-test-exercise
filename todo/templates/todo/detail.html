@@ -6,9 +6,12 @@
     <title>To Do Application</title>
     <meta charset="UTF-8">
     <meta name="author" content="INIAD">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
   </head>
 
   <body>
+    <div class="container">
     <h1>{{ task.title }}</h1>
     <ul>
       <li>Posted at: {{ task.posted_at }}</li>
@@ -16,16 +19,17 @@
       <li>Due at: {{ task.due_at }}</li>
       {% endif %}
       {% if task.completed %}
-      <li>Status: Completed</li>
+      <li>Status: <span class="status status-completed">Completed</span></li>
       {% else %}
-      <li>Status: Not Completed</li>
+      <li>Status: <span class="status status-not-completed">Not Completed</span></li>
       {% endif %}
     </ul>
 
-    <div>
+    <div class="action-buttons">
       <a href="{% url 'index' %}">Top</a>
       <a href="{% url 'update' task.id %}">Edit</a>
       <a href="{% url 'delete' task.id %}">Delete</a>
+    </div>
     </div>
   </body>
 

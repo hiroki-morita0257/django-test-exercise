@@ -6,9 +6,12 @@
   <title>To Do Application</title>
   <meta charset="UTF-8">
   <meta name="author" content="INIAD">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 
 <body>
+  <div class="container">
   <h1>Edit task</h1>
   <p>You can edit tasks from the following form.</p>
   <form action="{% url 'update' task.id%}" method="post">
@@ -26,6 +29,7 @@
     </div>
   </form>
   <br>
+  </div>
 </body>
 
 </html>

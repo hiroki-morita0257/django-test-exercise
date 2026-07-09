@@ -1,0 +1,281 @@
+/* VSCode風 ToDo Application スタイル */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  padding: 20px;
+}
+
+/* コンテナ */
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* ヘッダー */
+h1 {
+  color: #ffffff;
+  margin-bottom: 10px;
+  font-size: 2em;
+  border-bottom: 2px solid #007acc;
+  padding-bottom: 10px;
+}
+
+h2 {
+  color: #ffffff;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 1.5em;
+}
+
+p {
+  color: #b0b0b0;
+  margin-bottom: 15px;
+}
+
+/* フォーム */
+form {
+  background-color: #252526;
+  padding: 20px;
+  border-radius: 5px;
+  border: 1px solid #3e3e42;
+  margin-bottom: 20px;
+}
+
+form div {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  color: #e0e0e0;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+input[type="text"],
+input[type="datetime-local"] {
+  width: 100%;
+  padding: 10px;
+  background-color: #3c3c3c;
+  border: 1px solid #555555;
+  color: #e0e0e0;
+  border-radius: 4px;
+  font-size: 1em;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+input[type="text"]:focus,
+input[type="datetime-local"]:focus {
+  outline: none;
+  border-color: #007acc;
+  box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.2);
+  background-color: #3c3c3c;
+}
+
+/* ボタン */
+button {
+  background-color: #007acc;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: #0098ff;
+}
+
+button:active {
+  background-color: #005a9e;
+}
+
+/* リンク */
+a {
+  color: #007acc;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: #0098ff;
+  text-decoration: underline;
+}
+
+/* ナビゲーション */
+.nav-links {
+  display: flex;
+  gap: 15px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.nav-links a {
+  padding: 8px 12px;
+  background-color: #2d2d30;
+  border: 1px solid #3e3e42;
+  border-radius: 4px;
+  color: #e0e0e0;
+  transition: all 0.2s ease;
+}
+
+.nav-links a:hover {
+  background-color: #3e3e42;
+  border-color: #007acc;
+  color: #0098ff;
+  text-decoration: none;
+}
+
+.nav-links .separator {
+  color: #6a6a6a;
+}
+
+/* タスクカード */
+.text {
+  background-color: #252526;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border-left: 3px solid #007acc;
+  transition: all 0.2s ease;
+}
+
+.text:hover {
+  border-left-color: #0098ff;
+  background-color: #2d2d30;
+}
+
+.text h2 {
+  margin-top: 0;
+  color: #ffffff;
+}
+
+.text h2 a {
+  color: #007acc;
+  text-decoration: none;
+}
+
+.text h2 a:hover {
+  color: #0098ff;
+  text-decoration: underline;
+}
+
+/* リスト */
+ul {
+  list-style: none;
+  background-color: #1e1e1e;
+  margin: 10px 0;
+}
+
+li {
+  padding: 5px 0;
+  color: #b0b0b0;
+  display: flex;
+  align-items: center;
+}
+
+li::before {
+  content: "→";
+  color: #007acc;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+/* 詳細ページの操作ボタン */
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.action-buttons a {
+  padding: 10px 20px;
+  background-color: #2d2d30;
+  border: 1px solid #3e3e42;
+  border-radius: 4px;
+  color: #e0e0e0;
+  transition: all 0.2s ease;
+}
+
+.action-buttons a:hover {
+  background-color: #007acc;
+  border-color: #007acc;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* ステータスインジケータ */
+.status {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 0.9em;
+  margin-left: 10px;
+}
+
+.status-completed {
+  background-color: #007a5d;
+  color: #70d9b8;
+}
+
+.status-not-completed {
+  background-color: #5d4f2d;
+  color: #d4b372;
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 1.5em;
+  }
+
+  h2 {
+    font-size: 1.2em;
+  }
+
+  form {
+    padding: 15px;
+  }
+
+  input[type="text"],
+  input[type="datetime-local"] {
+    font-size: 16px; /* iOS キーボード対策 */
+  }
+
+  .nav-links {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .nav-links a {
+    width: 100%;
+    text-align: center;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .action-buttons a {
+    width: 100%;
+    text-align: center;
+  }
+}
