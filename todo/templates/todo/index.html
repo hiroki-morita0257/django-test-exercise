@@ -6,9 +6,12 @@
     <title>To Do Application</title>
     <meta charset="UTF-8">
     <meta name="author" content="INIAD">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
   </head>
 
   <body>
+    <div class="container">
     <h1>Sample To Do Application</h1>
     <p>You can submit tasks from the following form.</p>
     <form action="{% url 'index' %}" method="post">
@@ -27,8 +30,9 @@
     </form>
     <br>
 
-    <div>
-      <a href="{% url 'index' %}?order=due">Sort by Due Date</a> |
+    <div class="nav-links">
+      <a href="{% url 'index' %}?order=due">Sort by Due Date</a>
+      <span class="separator">|</span>
       <a href="{% url 'index' %}?order=post">Sort by Posted Date</a>
     </div>
 
@@ -41,13 +45,14 @@
         <li>Due at: {{ task.due_at }}</li>
         {% endif %}
         {% if task.completed %} 
-        <li>Status: Completed</li>
+        <li>Status: <span class="status status-completed">Completed</span></li>
         {% else %}
-        <li>Status: Not Completed</li>
+        <li>Status: <span class="status status-not-completed">Not Completed</span></li>
         {% endif %}
       </ul>
     </div>
     {% endfor %}
+    </div>
   </body>
 
 </html>
