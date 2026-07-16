@@ -15,8 +15,10 @@ def get_min_due_at():
 def index(request):
     if request.method == 'POST':
         due_at = request.POST.get('due_at')
+
         if due_at:
             parsed_due_at = make_aware(parse_datetime(due_at))
+
             if parsed_due_at < timezone.now():
                 context = {
                     'tasks': Task.objects.order_by('-posted_at'),
@@ -26,7 +28,12 @@ def index(request):
         else:
             parsed_due_at = None
 
-        task = Task(title=request.POST['title'], due_at=parsed_due_at)
+        memo = request.POST.get('memo', '')
+        task = Task(
+            title=request.POST['title'],
+            due_at=parsed_due_at,
+            memo=memo,
+        )
         task.save()
 
     if request.GET.get('order') == 'due':
@@ -58,10 +65,13 @@ def update(request, task_id):
         task = Task.objects.get(pk=task_id)
     except Task.DoesNotExist:
         raise Http404("Task dose not exist")
+
     if request.method == 'POST':
         due_at = request.POST.get('due_at')
+
         if due_at:
             parsed_due_at = make_aware(parse_datetime(due_at))
+
             if parsed_due_at < timezone.now():
                 context = {
                     'task': task,
@@ -73,7 +83,9 @@ def update(request, task_id):
 
         task.title = request.POST['title']
         task.due_at = parsed_due_at
+        task.memo = request.POST.get('memo', '')
         task.save()
+
         return redirect(detail, task_id)
 
     context = {
