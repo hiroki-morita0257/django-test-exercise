@@ -73,11 +73,31 @@ input[type="datetime-local"] {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+textarea.memo-input {
+  width: 100%;
+  padding: 10px;
+  min-height: 120px;
+  resize: vertical;
+  background-color: #3c3c3c;
+  border: 1px solid #555555;
+  color: #e0e0e0;
+  border-radius: 4px;
+  font-size: 1em;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 input[type="text"]:focus,
 input[type="datetime-local"]:focus {
   outline: none;
   border-color: #007acc;
   box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.2);
+  background-color: #3c3c3c;
+}
+
+textarea.memo-input:focus {
+  outline: none;
+  border-color: #80b7ff;
+  box-shadow: 0 0 0 2px rgba(128, 183, 255, 0.2);
   background-color: #3c3c3c;
 }
 
@@ -195,7 +215,7 @@ li {
   padding: 5px 0;
   color: #b0b0b0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 }
 
 li::before {
@@ -203,6 +223,13 @@ li::before {
   color: #007acc;
   margin-right: 10px;
   font-weight: bold;
+  line-height: 1.2;
+}
+
+.memo-text {
+  margin: 0;
+  color: #d0d0d0;
+  white-space: pre-wrap;
 }
 
 /* 詳細ページの操作ボタン */
