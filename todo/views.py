@@ -9,7 +9,13 @@ from todo.models import Task
 
 def index(request):
     if request.method == 'POST':
-        task = Task(title=request.POST['title'], due_at=make_aware(parse_datetime(request.POST['due_at'])))
+        due_at = request.POST.get('due_at')
+        if due_at:
+            due_at = make_aware(parse_datetime(due_at))
+        else:
+            due_at = None
+        memo = request.POST.get('memo', '')
+        task = Task(title=request.POST['title'], due_at=due_at, memo=memo)
         task.save()
 
     if request.GET.get('order') == 'due':
@@ -42,7 +48,12 @@ def update(request, task_id):
         raise Http404("Task dose not exist")
     if request.method == 'POST':
         task.title = request.POST['title']
-        task.due_at = make_aware(parse_datetime(request.POST['due_at']))
+        due_at = request.POST.get('due_at')
+        if due_at:
+            task.due_at = make_aware(parse_datetime(due_at))
+        else:
+            task.due_at = None
+        task.memo = request.POST.get('memo', '')
         task.save()
         return redirect(detail, task_id)
 
