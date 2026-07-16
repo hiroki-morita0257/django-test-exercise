@@ -54,6 +54,13 @@ class TaskModelTestCase(TestCase):
 
         self.assertFalse(task.is_overdue(current))
 
+    def test_memo_default_blank(self):
+        task = Task(title='task-without-memo')
+        task.save()
+
+        task = Task.objects.get(pk=task.pk)
+        self.assertEqual(task.memo, '')
+
 
 class TodoViewTestCase(TestCase):
     def test_index_get(self):
@@ -175,3 +182,34 @@ class TodoViewTestCase(TestCase):
         response = client.post('/1/update', data)
 
         self.assertEqual(response.status_code, 404)
+
+    def test_index_post_with_memo(self):
+        client = Client()
+        data = {'title': 'Task with memo', 'due_at': '2024-06-30 23:59:59', 'memo': 'Remember this'}
+        response = client.post('/', data)
+
+        # index view returns the page with tasks in context
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context['tasks']), 1)
+
+        task = Task.objects.first()
+        self.assertIsNotNone(task)
+        self.assertEqual(task.memo, 'Remember this')
+
+    def test_update_post_updates_memo(self):
+        task = Task(title='task1', due_at=timezone.make_aware(datetime(2024, 7, 1)))
+        task.save()
+        client = Client()
+        data = {
+            'title': 'updated with memo',
+            'due_at': '2024-08-01 12:00:00',
+            'memo': 'Updated memo content',
+        }
+
+        response = client.post('/{}/update'.format(task.pk), data)
+
+        self.assertEqual(response.status_code, 302)
+
+        task = Task.objects.get(pk=task.pk)
+        self.assertEqual(task.title, 'updated with memo')
+        self.assertEqual(task.memo, 'Updated memo content')
