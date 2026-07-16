@@ -22,7 +22,7 @@
     </div>
     <div>
       <label for="dueInput">Due at:</label><br>
-      <input id="dueInput" name="due_at" type="datetime-local" value="{{ task.due_at |date:" Y-m-d H:i" }}">
+      <input id="dueInput" name="due_at" type="datetime-local" min="{{ min_due_at }}" value="{{ task.due_at|date:'Y-m-d\TH:i' }}">
     </div>
     <div>
       <button type="submit">Submit</button>

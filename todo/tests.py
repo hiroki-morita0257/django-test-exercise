@@ -64,6 +64,14 @@ class TodoViewTestCase(TestCase):
         self.assertEqual(response.templates[0].name, 'todo/index.html')
         self.assertEqual(len(response.context['tasks']), 0)
 
+    def test_index_get_contains_min_due_at(self):
+        client = Client()
+        response = client.get('/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('min_due_at', response.context)
+        self.assertRegex(response.context['min_due_at'], r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$')
+
     def test_index_post(self):
         client = Client()
         data = {'title': 'Test Task', 'due_at': '2024-06-30 23:59:59'}
@@ -72,6 +80,14 @@ class TodoViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.templates[0].name, 'todo/index.html')
         self.assertEqual(len(response.context['tasks']), 1)
+
+    def test_index_post_rejects_past_due_at(self):
+        client = Client()
+        past_time = (timezone.now() - timezone.timedelta(hours=1)).strftime('%Y-%m-%dT%H:%M')
+        response = client.post('/', {'title': 'Past Task', 'due_at': past_time})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Task.objects.filter(title='Past Task').count(), 0)
 
     def test_index_get_order_post(self):
         task1 = Task(title='task1', due_at=timezone.make_aware(datetime(2024, 7, 1)))
@@ -142,6 +158,17 @@ class TodoViewTestCase(TestCase):
         self.assertEqual(response.templates[0].name, 'todo/edit.html')
         self.assertEqual(response.context['task'], task)
 
+    def test_update_get_contains_min_due_at(self):
+        task = Task(title='task1', due_at=timezone.make_aware(datetime(2024, 7, 1)))
+        task.save()
+        client = Client()
+
+        response = client.get('/{}/update'.format(task.pk))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('min_due_at', response.context)
+        self.assertRegex(response.context['min_due_at'], r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$')
+
     def test_update_get_fail(self):
         client = Client()
         response = client.get('/1/update')
@@ -164,6 +191,19 @@ class TodoViewTestCase(TestCase):
         task = Task.objects.get(pk=task.pk)
         self.assertEqual(task.title, 'updated task')
         self.assertEqual(task.due_at, timezone.make_aware(datetime(2024, 8, 1, 12, 0, 0)))
+
+    def test_update_post_rejects_past_due_at(self):
+        task = Task(title='task1', due_at=timezone.make_aware(datetime(2024, 7, 1)))
+        task.save()
+        client = Client()
+        past_time = (timezone.now() - timezone.timedelta(hours=1)).strftime('%Y-%m-%dT%H:%M')
+
+        response = client.post('/{}/update'.format(task.pk), {'title': 'updated task', 'due_at': past_time})
+
+        self.assertEqual(response.status_code, 200)
+        task.refresh_from_db()
+        self.assertEqual(task.title, 'task1')
+        self.assertEqual(task.due_at, timezone.make_aware(datetime(2024, 7, 1)))
 
     def test_update_post_fail(self):
         client = Client()
