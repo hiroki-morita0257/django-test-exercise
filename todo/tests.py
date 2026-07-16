@@ -75,7 +75,9 @@ class TodoViewTestCase(TestCase):
 
     def test_index_post(self):
         client = Client()
-        future_time = (timezone.now() + timezone.timedelta(hours=1)).strftime('%Y-%m-%dT%H:%M')
+        future_time = timezone.localtime(
+            timezone.now() + timezone.timedelta(hours=1)
+        ).strftime('%Y-%m-%dT%H:%M')
         data = {'title': 'Test Task', 'due_at': future_time}
         response = client.post('/', data)
 
@@ -181,7 +183,9 @@ class TodoViewTestCase(TestCase):
         task = Task(title='task1', due_at=timezone.make_aware(datetime(2024, 7, 1)))
         task.save()
         client = Client()
-        future_time = (timezone.now() + timezone.timedelta(hours=2)).strftime('%Y-%m-%dT%H:%M')
+        future_time = timezone.localtime(
+            timezone.now() + timezone.timedelta(hours=2)
+        ).strftime('%Y-%m-%dT%H:%M')
         data = {
             'title': 'updated task',
             'due_at': future_time,
