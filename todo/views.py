@@ -59,3 +59,16 @@ def delete(request, task_id):
         raise Http404("Task does not exist")
     task.delete()
     return redirect(index)
+
+  
+def toggle_status(request, task_id):
+    try:
+        task = Task.objects.get(pk=task_id)
+    except Task.DoesNotExist:
+        raise Http404("Task does not exist")
+
+    if request.method == 'POST':
+        task.completed = not task.completed
+        task.save()
+
+    return redirect(detail, task_id)
