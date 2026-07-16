@@ -1,5 +1,6 @@
 from django.test import TestCase, Client
 from django.utils import timezone
+from django.utils.dateparse import parse_datetime
 from datetime import datetime
 from todo.models import Task
 
@@ -74,7 +75,8 @@ class TodoViewTestCase(TestCase):
 
     def test_index_post(self):
         client = Client()
-        data = {'title': 'Test Task', 'due_at': '2024-06-30 23:59:59'}
+        future_time = (timezone.now() + timezone.timedelta(hours=1)).strftime('%Y-%m-%dT%H:%M')
+        data = {'title': 'Test Task', 'due_at': future_time}
         response = client.post('/', data)
 
         self.assertEqual(response.status_code, 200)
@@ -179,9 +181,10 @@ class TodoViewTestCase(TestCase):
         task = Task(title='task1', due_at=timezone.make_aware(datetime(2024, 7, 1)))
         task.save()
         client = Client()
+        future_time = (timezone.now() + timezone.timedelta(hours=2)).strftime('%Y-%m-%dT%H:%M')
         data = {
             'title': 'updated task',
-            'due_at': '2024-08-01 12:00:00',
+            'due_at': future_time,
         }
 
         response = client.post('/{}/update'.format(task.pk), data)
@@ -190,7 +193,7 @@ class TodoViewTestCase(TestCase):
 
         task = Task.objects.get(pk=task.pk)
         self.assertEqual(task.title, 'updated task')
-        self.assertEqual(task.due_at, timezone.make_aware(datetime(2024, 8, 1, 12, 0, 0)))
+        self.assertEqual(task.due_at, timezone.make_aware(parse_datetime(future_time)))
 
     def test_update_post_rejects_past_due_at(self):
         task = Task(title='task1', due_at=timezone.make_aware(datetime(2024, 7, 1)))
