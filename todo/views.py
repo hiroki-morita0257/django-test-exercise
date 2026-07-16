@@ -11,14 +11,29 @@ def index(request):
     if request.method == 'POST':
         task = Task(title=request.POST['title'], due_at=make_aware(parse_datetime(request.POST['due_at'])))
         task.save()
+    
+    status = request.GET.get('status', 'all')
+    tasks = Task.objects.all()
 
-    if request.GET.get('order') == 'due':
-        tasks = Task.objects.order_by('due_at')
+    if status == 'completed':
+        tasks = tasks.filter(completed=True)
+    elif status == 'incomplete':
+        tasks = tasks.filter(completed=False)
     else:
-        tasks = Task.objects.order_by('-posted_at')
+        status = 'all'
+
+    order = request.GET.get('order', 'post')
+
+    if order  == 'due':
+        tasks = tasks.order_by('due_at')
+    else:
+        order = 'post'
+        tasks = tasks.order_by('-posted_at')
 
     context = {
         'tasks': tasks,
+        'current_status': status,
+        'current_order': order,
     }
     return render(request, 'todo/index.html', context)
 
