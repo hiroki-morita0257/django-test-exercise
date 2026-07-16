@@ -35,9 +35,17 @@
     <br>
 
     <div class="nav-links">
-      <a href="{% url 'index' %}?order=due">Sort by Due Date</a>
+      <a href="{% url 'index' %}?status=all&amp;order={{ current_order }}">すべて</a>
       <span class="separator">|</span>
-      <a href="{% url 'index' %}?order=post">Sort by Posted Date</a>
+      <a href="{% url 'index' %}?status=incomplete&amp;order={{ current_order }}">未完了</a>
+      <span class="separator">|</span>
+      <a href="{% url 'index' %}?status=completed&amp;order={{ current_order }}">完了</a>
+    </div>
+
+    <div class="nav-links">
+      <a href="{% url 'index' %}?order=due&amp;status={{ current_status }}">Sort by Due Date</a>
+      <span class="separator">|</span>
+      <a href="{% url 'index' %}?order=post&amp;status={{ current_status }}">Sort by Posted Date</a>
     </div>
 
     {% for task in tasks %}

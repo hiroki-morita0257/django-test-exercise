@@ -32,6 +32,14 @@
       <a href="{% url 'index' %}">Top</a>
       <a href="{% url 'update' task.id %}">Edit</a>
       <a href="{% url 'delete' task.id %}">Delete</a>
+      <form class="status-toggle-form" action="{% url 'toggle_status' task.id %}" method="post">
+        {% csrf_token %}
+        {% if task.completed %}
+        <button type="submit">未完了に戻す</button>
+        {% else %}
+        <button type="submit">完了にする</button>
+        {% endif %}
+      </form>
     </div>
     </div>
   </body>
