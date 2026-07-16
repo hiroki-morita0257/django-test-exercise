@@ -102,6 +102,17 @@ button:active {
   background-color: #005a9e;
 }
 
+.status-toggle-form {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  border: none;
+}
+
+.status-toggle-form button {
+  height: 100%;
+}
 /* リンク */
 a {
   color: #007acc;
